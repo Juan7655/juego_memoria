@@ -22,7 +22,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
     Button btn0,btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,btn10,btn11,btn12,btn13,btn14,btn15,btn16,btn17,btn18,btn19,btn20,btn21,btn22,btn23,btn24,btn25,btn26,btn27,btn28,btn29;
-    TextView txtSendorLDR;
+    TextView txtSendorLDR,patoa;
     Handler bluetoothIn;
     private boolean fck;
     private static String num1;
@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
 
 
         fck=false;
+        patoa = (TextView) findViewById(R.id.PATOA);
         btn0 = (Button) findViewById(R.id.button0);
         btn1 = (Button) findViewById(R.id.button1);
         btn2 = (Button) findViewById(R.id.button2);
@@ -83,26 +84,21 @@ public class MainActivity extends Activity {
 
         bluetoothIn = new Handler() {
             public void handleMessage(android.os.Message msg) {
+
                 if (msg.what == handlerState) {
-                    //if message is what we want
-                    String readMessage = (String) msg.obj;                                                                // msg.arg1 = bytes from connect thread
-                    recDataString.append(readMessage);      								//keep appending to string until ~
-                    int endOfLineIndex = recDataString.indexOf("~");                    // determine the end-of-line
-                    if (endOfLineIndex > 0) {                                           // make sure there data before ~
-                        String dataInPrint = recDataString.substring(0, endOfLineIndex);    // extract string
+                 //   Toast.makeText(getApplication(),(String) msg.obj, Toast.LENGTH_SHORT).show();
 
-                        int dataLength = dataInPrint.length();							//get length of data received
-
-                        if (recDataString.charAt(0) == '#')								//if it starts with # we know it is what we are looking for
-                        {
-                            String sensor0 = recDataString.substring(1, 5);             //get sensor value from string between indices 1-5
-                            String sensor1 = recDataString.substring(6, 10);            //same again...
-                            String sensor2 = recDataString.substring(11, 15);
-                            String sensor3 = recDataString.substring(16, 20);
+                    String readMessage = (String) msg.obj;
+                    recDataString.append(readMessage);
+                    int endOfLineIndex = recDataString.indexOf("~");
+                    if (endOfLineIndex > 0) {
+                        String dataInPrint = recDataString.substring(0, endOfLineIndex);
+                        patoa.setText( readMessage);
 
 
-                        }
-                        recDataString.delete(0, recDataString.length()); 					//clear all string data
+
+
+                        recDataString.delete(0, recDataString.length());
                         // strIncom =" ";
                         dataInPrint = " ";
                     }
