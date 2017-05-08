@@ -6,4 +6,5 @@
     <string name="select_player_text">Seleccione su jugador</string>
     <string name="player1_text">Jugador 1</string>
     <string name="player2_text">Jugador 2</string>
+    <string name="connectiong_text">Conectando...</string>
 </resources>

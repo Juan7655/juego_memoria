@@ -3,13 +3,11 @@ package com.tatoado.ramabluewingood;
 /**
  * Created by juandavid on 4/05/17.
  */
-
-@SuppressWarnings("WeakerAccess")
 class GameManager {
 
 	private static GameManager instance = new GameManager();//patron de diseño singleton
 	private final Player[] player = new Player[2]; //jugadores de la aplicación
-	public boolean firstPlayerTurn = true; //determina de quién es el turno en cada momento
+	boolean firstPlayerTurn = true; //determina de quién es el turno en cada momento
 
 	/**
 	 * se crean los jugadores
@@ -19,14 +17,14 @@ class GameManager {
 		player[1] = new Player();
 	}
 
-	public static GameManager getInstance() {
+	static GameManager getInstance() {
 		return instance;
 	}
 
 	/**
 	 * elimina los puntos de todos los jugadores
 	 */
-	public void resetGame() {
+	void resetGame() {
 		player[0].resetPoints();
 		player[1].resetPoints();
 	}
@@ -37,7 +35,7 @@ class GameManager {
 	 * @param id jugador de quien se quiere saber el puntaje
 	 * @return puntaje del jugador seleccionado
 	 */
-	public int getPlayerPoints(int id) {
+	int getPlayerPoints(int id) {
 		return id == 1 || id == 2 ? player[id - 1].getPoints() : -1;
 	}
 
@@ -46,7 +44,7 @@ class GameManager {
 	 *
 	 * @param point determina si hay punto o no
 	 */
-	public void addPlayerPoint(boolean point) {
+	void addPlayerPoint(boolean point) {
 		if (point)
 			player[firstPlayerTurn ? 0 : 1].addPoint();
 		firstPlayerTurn = !firstPlayerTurn;
@@ -58,7 +56,7 @@ class GameManager {
 	 * @param id    identificador del jugador a quien se desea agregar punto
 	 * @param point determina si hay punto o no
 	 */
-	public void addPlayerPoint(int id, boolean point) {
+	void addPlayerPoint(int id, boolean point) {
 		if (point)
 			player[id - 1].addPoint();
 	}
@@ -66,7 +64,7 @@ class GameManager {
 	/**
 	 * alterna el turno entre los jugadores
 	 */
-	public void changePlayer() {
+	void changePlayer() {
 		firstPlayerTurn = !firstPlayerTurn;
 	}
 

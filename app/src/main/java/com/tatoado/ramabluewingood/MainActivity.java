@@ -40,8 +40,8 @@ public class MainActivity extends Activity {
 	private TextView playerTurn;
 	private TextView patoa;
 	private boolean fck = true;
-	private BluetoothAdapter btAdapter = null;
-	private BluetoothSocket btSocket = null;
+	private BluetoothAdapter btAdapter;
+	private BluetoothSocket btSocket;
 	private StringBuilder recDataString = new StringBuilder();
 	private ConnectedThread mConnectedThread;
 	private int btn1 = 0, btn2 = 0;
