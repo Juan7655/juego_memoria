@@ -3,4 +3,7 @@
     <string name="action_settings">Configuracion</string>
     <string name="hello_world">Hola Mundo</string>
     <string name="none_paired">Ningun dispositivo pudo ser emparejado</string>
+    <string name="select_player_text">Seleccione su jugador</string>
+    <string name="player1_text">Jugador 1</string>
+    <string name="player2_text">Jugador 2</string>
 </resources>

@@ -35,6 +35,19 @@ class GameManager {
 		firstPlayerTurn = !firstPlayerTurn;
 	}
 
+	public void addPlayerPoint(int id, boolean point) {
+		if (point)
+			player[id - 1].addPoint();
+	}
+
+	public void changePlayer(){
+		firstPlayerTurn = !firstPlayerTurn;
+	}
+
+	public boolean isFirstPlayerTurn() {
+		return firstPlayerTurn;
+	}
+
 	private class Player {
 		private int points;
 
