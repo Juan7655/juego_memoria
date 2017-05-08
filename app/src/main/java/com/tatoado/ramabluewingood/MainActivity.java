@@ -30,13 +30,13 @@ public class MainActivity extends Activity {
 	private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	public static int player = 0;
 	static Handler bluetoothIn;
-	final int handlerState = 0;                         //used to identify handler message
+	final int handlerState = 0;//used to identify handler message
 	private final String _DATABASE_NAME = "GAME", _PLAYER_TURN = "PLAYER_TURN",
 			_SELECTED_LED1 = "SELECTED_LED1", _SELECTED_LED2 = "SELECTED_LED2",
 			_PLAYER1_POINTS = "PLAYER1_POINTS ", _PLAYER2_POINTS = "PLAYER2_POINTS";
 	private final GameManager manager = GameManager.getInstance();
 	DatabaseReference database = FirebaseDatabase.getInstance().getReference(_DATABASE_NAME);
-	private Button[] btn = new Button[30];
+	Button[] btn = new Button[30];
 	private TextView playerTurn;
 	private TextView patoa;
 	private boolean fck = true;
@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
 		playerTurn.setText(R.string.player1_text);
 		attachFirebaseDatabase();
 
-		if (player == 1) {
+		if (player == 1) {//se establece la configuración de los datos de inicio
 			manager.resetGame();
 			database.child(_PLAYER_TURN).setValue(true);
 			database.child(_SELECTED_LED1).setValue(0);
@@ -67,22 +67,23 @@ public class MainActivity extends Activity {
 
 			bluetoothIn = new Handler() {
 				public void handleMessage(android.os.Message msg) {
-
+					//Se establece el Handler para los datos bluetooth recibidos
 					if (msg.what == handlerState) {
 						String readMessage = (String) msg.obj;
 						recDataString.append(readMessage);
-						int endOfLineIndex = recDataString.indexOf("~");
+						int endOfLineIndex = recDataString.indexOf("~");//se utilliza el mensaje hasta el simbolo de fin de datos
 						if (endOfLineIndex > 0) {
 							readMessage = recDataString.substring(endOfLineIndex - 1, endOfLineIndex);
 							int readValue = -1;
 							try {
 								readValue = Integer.parseInt(readMessage);
 							} catch (NumberFormatException ignored) {
+								//si no se puede convertir a int, se deja el valor inicial de -1
 							}
 							patoa.setText(String.valueOf(readValue));
-							manager.addPlayerPoint(readValue == 1);
+							manager.addPlayerPoint(readValue == 1);//si el valor es 1, se agrega punto al jugador
 							manager.changePlayer();
-							if (readValue == 0) {
+							if (readValue == 0) {//se vuelven a habilitar los botones si no hubo punto
 								btn[btn1 - 1].setEnabled(true);
 								btn[btn2 - 1].setEnabled(true);
 							}
@@ -90,27 +91,27 @@ public class MainActivity extends Activity {
 							database.child(_PLAYER1_POINTS).setValue(manager.getPlayerPoints(1));
 							database.child(_PLAYER2_POINTS).setValue(manager.getPlayerPoints(2));
 						}
-						recDataString.delete(0, recDataString.length());
+						recDataString.delete(0, recDataString.length());//se reinicia el mensaje
 					}
 				}
 			};
 
-			btAdapter = BluetoothAdapter.getDefaultAdapter();       // get Bluetooth adapter
+			btAdapter = BluetoothAdapter.getDefaultAdapter();// get Bluetooth adapter
 			checkBTState();
 		}
 
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 30; i++) {//crea los botones dinámicamente y les asigna el listener correspondiente
 			final int id = i;
 			btn[i] = (Button) findViewById(getButtonId(i));
 			btn[i].setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					if (player == 1) {
+					if (player == 1) {//si el jugador es 1, se envia la correspondiente informacion por BT
 						mConnectedThread.write("@" + (fck ? "1" : "2") + ":" + String.valueOf(id + 1) + "/");
 						database.child(_PLAYER_TURN).setValue(manager.firstPlayerTurn);
 					}
-					if (fck) btn1 = id;
+					if (fck) btn1 = id;//se determina si es la primera o segudna seleccion de led
 					else btn2 = id;
-					database.child(fck ? _SELECTED_LED1 : _SELECTED_LED2).setValue(id + 1);
+					database.child(fck ? _SELECTED_LED1 : _SELECTED_LED2).setValue(id + 1);//se publica la informacion en DB Cloud
 					fck = !fck;
 				}
 			});
@@ -118,6 +119,12 @@ public class MainActivity extends Activity {
 
 	}
 
+	/**
+	 * Retorna el id del boton en el layout dependiendo del id enviado como parametro
+	 *
+	 * @param id el id del botón del que se requiere el identificador de layout
+	 * @return el identificador del botón requerido
+	 */
 	private int getButtonId(int id) {
 		switch (id) {
 			case 0:
@@ -185,11 +192,14 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Se conecta con la base de datos en la nube con Google Firebase y se suscribe a los cambios de información
+	 */
 	private void attachFirebaseDatabase() {
 		database.addValueEventListener(new ValueEventListener() {
 			@Override
-			public void onDataChange(DataSnapshot dataSnapshot) {
-				//Se obtienen los datos
+			public void onDataChange(DataSnapshot dataSnapshot) {//Se percibe un cambio en los datos
+				//se reciben y guardan los datos remotos
 				boolean player1 = (boolean) dataSnapshot.child(_PLAYER_TURN).getValue();
 				playerTurn.setText(player1 ? R.string.player1_text : R.string.player2_text);
 				int points1 = (int) (long) dataSnapshot.child(_PLAYER1_POINTS).getValue(),
@@ -201,27 +211,30 @@ public class MainActivity extends Activity {
 				if (points1 != manager.getPlayerPoints(1)) manager.addPlayerPoint(1, true);
 				if (points2 != manager.getPlayerPoints(2)) manager.addPlayerPoint(2, true);
 
-				if (led1 != btn1 && led1 > 0) {
-					btn[led1 - 1].callOnClick();
-					btn[led1 - 1].setEnabled(false);
-				}
-				if (led2 != btn2 && led2 > 0) {
-					btn[led1 - 1].callOnClick();
-					btn[led2 - 1].callOnClick();
+				{//si se percibe un cammbio en la seleccion de leds, aplicar a los correspondientes botones
+					if (led1 != btn1 && led1 > 0) {
+						btn[led1 - 1].callOnClick();
+						btn[led1 - 1].setEnabled(false);
+					}
+					if (led2 != btn2 && led2 > 0) {
+						btn[led1 - 1].callOnClick();
+						btn[led2 - 1].callOnClick();
 
-					btn[led1 - 1].setEnabled(false);
-					btn[led2 - 1].setEnabled(false);
+						btn[led1 - 1].setEnabled(false);
+						btn[led2 - 1].setEnabled(false);
+					}
+					btn1 = led1;
+					btn2 = led2;
 				}
-				btn1 = led1;
-				btn2 = led2;
-
+				//se muestran los puntos de cada jugador reflejando los cambios en la base de datos cloud
 				((TextView) findViewById(R.id.score_1)).setText(getString(R.string.player1_text) + ": " + manager.getPlayerPoints(1));
 				((TextView) findViewById(R.id.score_2)).setText(getString(R.string.player2_text) + ": " + manager.getPlayerPoints(2));
 			}
 
 			@Override
 			public void onCancelled(DatabaseError databaseError) {
-
+				//código si hay una operación que se cancela
+				//no se necesita, por lo que se deja vacío
 			}
 		});
 	}
@@ -324,7 +337,7 @@ public class MainActivity extends Activity {
 			try {//write bytes over BT connection via outstream
 				mmOutStream.write(msgBuffer);
 			} catch (IOException e) {//if you cannot write, close the application
-				Toast.makeText(getBaseContext(), "La Conexión fallo", Toast.LENGTH_LONG).show();
+				Toast.makeText(getBaseContext(), "La Conexión falló", Toast.LENGTH_LONG).show();
 				finish();
 			}
 		}
