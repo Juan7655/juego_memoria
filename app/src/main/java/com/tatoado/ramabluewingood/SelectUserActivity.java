@@ -15,7 +15,7 @@ public class SelectUserActivity extends AppCompatActivity {
 		findViewById(R.id.button_player1).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				MainActivity.player = 1;
+				//MainActivity.player = 1;
 				startActivity(new Intent(getApplicationContext(), DeviceListActivity.class));
 				finish();
 			}
@@ -24,9 +24,10 @@ public class SelectUserActivity extends AppCompatActivity {
 		findViewById(R.id.button_player2).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				MainActivity.player = 2;
-				startActivity(new Intent(getApplicationContext(), MainActivity.class));
-				finish();
+				//MainActivity.player = 2;
+				Intent intent = new Intent(getBaseContext(), MainActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
 			}
 		});
 	}

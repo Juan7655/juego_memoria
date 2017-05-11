@@ -6,15 +6,13 @@ package com.tatoado.ramabluewingood;
 class GameManager {
 
 	private static GameManager instance = new GameManager();//patron de diseño singleton
-	private final Player[] player = new Player[2]; //jugadores de la aplicación
+	private final Player player = new Player(); //jugadores de la aplicación
 	boolean firstPlayerTurn = true; //determina de quién es el turno en cada momento
 
 	/**
 	 * se crean los jugadores
 	 */
 	private GameManager() {
-		player[0] = new Player();
-		player[1] = new Player();
 	}
 
 	static GameManager getInstance() {
@@ -25,18 +23,16 @@ class GameManager {
 	 * elimina los puntos de todos los jugadores
 	 */
 	void resetGame() {
-		player[0].resetPoints();
-		player[1].resetPoints();
+		player.resetPoints();
 	}
 
 	/**
 	 * devuelve el puntaje del jugador seleccionado
 	 *
-	 * @param id jugador de quien se quiere saber el puntaje
 	 * @return puntaje del jugador seleccionado
 	 */
-	int getPlayerPoints(int id) {
-		return id == 1 || id == 2 ? player[id - 1].getPoints() : -1;
+	int getPlayerPoints() {
+		return player.getPoints();
 	}
 
 	/**
@@ -46,7 +42,7 @@ class GameManager {
 	 */
 	void addPlayerPoint(boolean point) {
 		if (point)
-			player[firstPlayerTurn ? 0 : 1].addPoint();
+			player.addPoint();
 		firstPlayerTurn = !firstPlayerTurn;
 	}
 
@@ -58,7 +54,7 @@ class GameManager {
 	 */
 	void addPlayerPoint(int id, boolean point) {
 		if (point)
-			player[id - 1].addPoint();
+			player.addPoint();
 	}
 
 	/**

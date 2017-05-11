@@ -4,7 +4,10 @@
     <string name="hello_world">Hola Mundo</string>
     <string name="none_paired">Ningun dispositivo pudo ser emparejado</string>
     <string name="select_player_text">Seleccione su jugador</string>
-    <string name="player1_text">Jugador 1</string>
+    <string name="player1_text">Comenzar</string>
     <string name="player2_text">Jugador 2</string>
     <string name="connectiong_text">Conectando...</string>
+    <string name="finish_text">Has terminado!</string>
+    <string name="start_again_text">Volver a empezar</string>
+    <string name="your_time">Tu tiempo fue:</string>
 </resources>

@@ -25,5 +25,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button_player1"
-        android:text="@string/player2_text"/>
+        android:text="@string/player2_text"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/ic_launcher"
+        android:layout_below="@+id/button_player2"
+        android:layout_margin="20dp"/>
 </RelativeLayout>

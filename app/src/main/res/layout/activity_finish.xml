@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tatoado.ramabluewingood.FinishActivity">
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/finish_text"
+    android:gravity="center"
+    android:textSize="40sp"
+    android:id="@+id/finish_text"
+    android:textStyle="bold"
+    android:layout_margin="20dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/your_time"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:id="@+id/your_time_text"
+        android:layout_below="@+id/finish_text"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="10:32"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:id="@+id/time_text"
+        android:layout_below="@+id/your_time_text"
+        android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start_again_text"
+        android:layout_below="@+id/time_text"
+        android:id="@+id/return_button"/>
+</RelativeLayout>
