@@ -18,9 +18,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
+import android.widget.Chronometer;
 
 public class MainActivity extends Activity {
 
+
+	//Objeto de cronometro
+	Chronometer chrono;
+	public static String TextoTiempo;
 	// SPP UUID service - this should work for most devices
 	private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	static Handler bluetoothIn;
@@ -28,7 +33,6 @@ public class MainActivity extends Activity {
 	final int handlerState = 0;//used to identify handler message
 	private final GameManager manager = GameManager.getInstance();
 	Button[] btn = new Button[30];
-	private TextView playerTurn;
 	private TextView patoa;
 	private boolean fck = true;
 	private BluetoothAdapter btAdapter;
@@ -42,7 +46,21 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		patoa = (TextView) findViewById(R.id.PATOA);
-		playerTurn = (TextView) findViewById(R.id.player_turn);
+
+		chrono = (Chronometer) findViewById(R.id.chronometer2);
+		Handler mHandler = new Handler();
+		chrono.start();
+
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				TextoTiempo=chrono.getText().toString();
+				mConnectedThread.write("t");
+				startActivity(new Intent(getBaseContext(), FinishActivity.class).putExtra("TIEMPO",TextoTiempo));
+			}
+		},301000L);
+
+
 
 		//se establece la configuración de los datos de inicio
 			manager.resetGame();
@@ -57,7 +75,7 @@ public class MainActivity extends Activity {
 								startOfLineIndex = recDataString.indexOf("@");
 						if(startOfLineIndex != -1 && endOfLineIndex != -1) {
 							readMessage = recDataString.substring(startOfLineIndex + 1, endOfLineIndex);
-							;//se utilliza el mensaje hasta el simbolo de fin de datos
+							//se utilliza el mensaje hasta el simbolo de fin de datos
 							if (endOfLineIndex > 0) {
 								int readValue = -1;
 								try {
@@ -67,10 +85,12 @@ public class MainActivity extends Activity {
 								}
 								patoa.setText(String.valueOf(readValue));
 								manager.addPlayerPoint(readValue == 1);//si el valor es 1, se agrega punto al jugador
-								((TextView) findViewById(R.id.score_1)).setText(getString(R.string.player1_text) + ": " + manager.getPlayerPoints());
+								((TextView) findViewById(R.id.score_1)).setText(getString(R.string.score_text) + ": " + manager.getPlayerPoints());
 								if (manager.getPlayerPoints() >= 15) {
+									TextoTiempo=chrono.getText().toString();
 									mConnectedThread.write("t");
 									startActivity(new Intent(getBaseContext(), FinishActivity.class));
+
 								}
 								if (readValue == 0) {//se vuelven a habilitar los botones si no hubo punto
 									btn[btn1].setEnabled(true);

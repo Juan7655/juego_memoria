@@ -10,4 +10,7 @@
     <string name="finish_text">Has terminado!</string>
     <string name="start_again_text">Volver a empezar</string>
     <string name="your_time">Tu tiempo fue:</string>
+    <string name="led_on">LED ON</string>
+    <string name="score_text">Parejas halladas</string>
+    <string name="your_score_text">Tu puntaje fue:</string>
 </resources>

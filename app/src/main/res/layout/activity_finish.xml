@@ -18,17 +18,35 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/your_time"
+        android:text="@string/your_score_text"
         android:gravity="center"
         android:textSize="20sp"
-        android:id="@+id/your_time_text"
+        android:id="@+id/your_score_text"
         android:layout_below="@+id/finish_text"
         android:layout_marginTop="20dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="10:32"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:id="@+id/score_text"
+        android:layout_below="@+id/your_score_text"
+        android:layout_marginBottom="40dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/your_time"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:id="@+id/your_time_text"
+        android:layout_below="@+id/your_score_text"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="20sp"
         android:id="@+id/time_text"

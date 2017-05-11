@@ -114,8 +114,10 @@
     <orderEntry type="library" exported="" name="appcompat-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-basement-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-database-connection-9.6.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
     <orderEntry type="library" exported="" name="firebase-core-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-common-9.6.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
     <orderEntry type="library" exported="" name="firebase-analytics-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-iid-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-crash-9.6.1" level="project" />
