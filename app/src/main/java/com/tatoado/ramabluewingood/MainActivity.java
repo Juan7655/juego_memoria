@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
 	// SPP UUID service - this should work for most devices
 	private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	static Handler bluetoothIn;
+	public static boolean newGame = true;
 	final int handlerState = 0;//used to identify handler message
 	private final GameManager manager = GameManager.getInstance();
 	Button[] btn = new Button[30];
@@ -52,23 +53,32 @@ public class MainActivity extends Activity {
 					if (msg.what == handlerState) {
 						String readMessage = (String) msg.obj;
 						recDataString.append(readMessage);
-						Log.d("Bluetooth Message", recDataString.toString());
-						int endOfLineIndex = recDataString.indexOf("~");//se utilliza el mensaje hasta el simbolo de fin de datos
-						if (endOfLineIndex > 0) {
-							readMessage = recDataString.substring(endOfLineIndex - 1, endOfLineIndex);
-							int readValue = -1;
-							try {
-								readValue = Integer.parseInt(readMessage);
-							} catch (NumberFormatException ignored) {
-								//si no se puede convertir a int, se deja el valor inicial de -1
-							}
-							patoa.setText(String.valueOf(readValue));
-							manager.addPlayerPoint(readValue == 1);//si el valor es 1, se agrega punto al jugador
-							((TextView) findViewById(R.id.score_1)).setText(getString(R.string.player1_text) + ": " + manager.getPlayerPoints());
-							if(manager.getPlayerPoints() >= 15) startActivity(new Intent(getBaseContext(), FinishActivity.class));
-							if (readValue == 0) {//se vuelven a habilitar los botones si no hubo punto
-								btn[btn1 - 1].setEnabled(true);
-								btn[btn2 - 1].setEnabled(true);
+						int endOfLineIndex = recDataString.indexOf("/"),
+								startOfLineIndex = recDataString.indexOf("@");
+						if(startOfLineIndex != -1 && endOfLineIndex != -1) {
+							readMessage = recDataString.substring(startOfLineIndex + 1, endOfLineIndex);
+							;//se utilliza el mensaje hasta el simbolo de fin de datos
+							if (endOfLineIndex > 0) {
+								int readValue = -1;
+								try {
+									readValue = Integer.parseInt(readMessage);
+								} catch (NumberFormatException ignored) {
+									//si no se puede convertir a int, se deja el valor inicial de -1
+								}
+								patoa.setText(String.valueOf(readValue));
+								manager.addPlayerPoint(readValue == 1);//si el valor es 1, se agrega punto al jugador
+								((TextView) findViewById(R.id.score_1)).setText(getString(R.string.player1_text) + ": " + manager.getPlayerPoints());
+								if (manager.getPlayerPoints() >= 15) {
+									mConnectedThread.write("t");
+									startActivity(new Intent(getBaseContext(), FinishActivity.class));
+								}
+								if (readValue == 0) {//se vuelven a habilitar los botones si no hubo punto
+									btn[btn1].setEnabled(true);
+									btn[btn2].setEnabled(true);
+								}else if(readValue == 1){
+									btn[btn1].setEnabled(false);
+									btn[btn2].setEnabled(false);
+								}
 							}
 						}
 						recDataString.delete(0, recDataString.length());//se reinicia el mensaje
@@ -203,7 +213,10 @@ public class MainActivity extends Activity {
 
 			//I send a character when resuming.beginning transmission to check device is connected
 			//If it is not an exception will be thrown in the write method and finish() will be called
-			mConnectedThread.write("x");
+		if(newGame){
+			mConnectedThread.write("t");
+			newGame = !newGame;
+		}
 	}
 
 	@Override
