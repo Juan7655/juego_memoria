@@ -16,7 +16,7 @@ class FirebaseDatabase implements ValueEventListener {
 	private final String _DATABASE_NAME = "GAME", _BEST_SCORE = "BEST_SCORE",
 			_BEST_TIME = "BEST_TIME", _HISTORY = "HISTORY", _SCORE = "SCORE", _TIME = "TIME";
 	private DatabaseReference database = com.google.firebase.database.FirebaseDatabase.getInstance().getReference(_DATABASE_NAME);
-	private int bestScore = 0, bestTime = 0;
+	private static int bestScore = 0, bestTime = 301;
 
 	private FirebaseDatabase() {
 		database.addValueEventListener(this);
@@ -26,7 +26,7 @@ class FirebaseDatabase implements ValueEventListener {
 		return instance;
 	}
 
-	public void insertGame(String date, int seconds, int score) {
+	void insertGame(String date, int seconds, int score) {
 		database.child(_HISTORY).child(date).child(_SCORE).setValue(score);
 		database.child(_HISTORY).child(date).child(_TIME).setValue(seconds);
 
@@ -34,18 +34,23 @@ class FirebaseDatabase implements ValueEventListener {
 		if(score > bestScore) database.child(_BEST_SCORE).setValue(score);
 	}
 
+	@SuppressWarnings("unused")
 	public int getBestScore() {
 		return bestScore;
 	}
 
+	@SuppressWarnings("unused")
 	public int getBestTime() {
 		return bestTime;
 	}
 
 	@Override
 	public void onDataChange(DataSnapshot dataSnapshot) {
-		bestScore = (int) (long) dataSnapshot.child(_BEST_SCORE).getValue();
-		bestTime = (int) (long) dataSnapshot.child(_BEST_TIME).getValue();
+		try {
+			bestScore = (int) (long) dataSnapshot.child(_BEST_SCORE).getValue();
+			bestTime = (int) (long) dataSnapshot.child(_BEST_TIME).getValue();
+		}catch (NullPointerException ignored){
+		}
 	}
 
 	@Override

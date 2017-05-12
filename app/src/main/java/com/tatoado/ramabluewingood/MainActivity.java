@@ -115,9 +115,13 @@ public class MainActivity extends Activity {
 			btn[i] = (Button) findViewById(getButtonId(i));
 			btn[i].setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
+					if(!fck && id == btn1) return;
 					//si el jugador es 1, se envia la correspondiente informacion por BT
 						mConnectedThread.write("@" + (fck ? "1" : "2") + ":" + String.valueOf(id + 1) + "/");
-					if (fck) btn1 = id;//se determina si es la primera o segudna seleccion de led
+					if (fck){
+						btn1 = id;//se determina si es la primera o segunda seleccion de led
+						btn2=btn1;//usado para bloquear la repeticion
+					}
 					else btn2 = id;
 					fck = !fck;
 				}

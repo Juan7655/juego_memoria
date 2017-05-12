@@ -121,5 +121,6 @@
     <orderEntry type="library" exported="" name="firebase-analytics-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-iid-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-crash-9.6.1" level="project" />
+    <orderEntry type="library" exported="" name="annotations-java5-15.0" level="project" />
   </component>
 </module>

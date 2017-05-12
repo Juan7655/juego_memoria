@@ -1,6 +1,7 @@
 package com.tatoado.ramabluewingood;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -23,6 +24,7 @@ private FirebaseDatabase database = FirebaseDatabase.getInstance();
 		String textoTiempo = getIntent().getStringExtra("TIEMPO");
 
 		CharSequence s  = DateFormat.format("d-MM-yy hh:mm", new Date().getTime() + 1);
+		if(textoTiempo == null) textoTiempo = "0:0";
 		database.insertGame(s.toString(), formatTime(textoTiempo), manager.getPlayerPoints());
 
 		((TextView) findViewById(R.id.time_text)).setText(textoTiempo);
@@ -38,7 +40,7 @@ private FirebaseDatabase database = FirebaseDatabase.getInstance();
 		});
 	}
 
-	public int formatTime(String entry){
+	public int formatTime(@NonNull String entry){
 		int minutes = Integer.parseInt(entry.substring(0, entry.indexOf(":"))),
 				seconds = Integer.parseInt(entry.substring(entry.indexOf(":") + 1));
 
