@@ -25,7 +25,7 @@ private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 		CharSequence s  = DateFormat.format("d-MM-yy hh:mm", new Date().getTime() + 1);
 		if(textoTiempo == null) textoTiempo = "0:0";
-		database.insertGame(s.toString(), formatTime(textoTiempo), manager.getPlayerPoints());
+		database.insertGame(s.toString(), formatTime(getIntent().getStringExtra("TIEMPO")), manager.getPlayerPoints());
 
 		((TextView) findViewById(R.id.time_text)).setText(textoTiempo);
 		((TextView) findViewById(R.id.score_text)).setText(String.valueOf(manager.getPlayerPoints()));
